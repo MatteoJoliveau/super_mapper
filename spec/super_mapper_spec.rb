@@ -1,4 +1,16 @@
-# frozen_string_literal: truee
+# frozen_string_literal: true
+class First
+  attr_accessor :one, :two
+
+  def initialize one, two
+    @one = one
+    @two = two
+  end
+end
+
+class Second
+  attr_accessor :eleven, :twelve
+end
 
 RSpec.describe SuperMapper do
   it 'has a version number' do
@@ -6,39 +18,23 @@ RSpec.describe SuperMapper do
   end
 
   context '#define_mapping' do
-    let(:mapping) { OpenStruct.new }
-    before do
-      allow(SuperMapper::Mapping).to receive(:new).and_return mapping
-    end
-
     it 'can configure a new mapping' do
-      subject.define_mapping OpenStruct do |mapping|
-        mapping.one = :eleven
-        mapping.two = :twelve
+      subject.define_mapping First, Second do |first, second|
+        second.eleven = first.one
+        second.twelve = first.two
       end
 
-      expect(mapping.one).to eq :eleven
-      expect(mapping.two).to eq :twelve
+      mapping = subject.instance_variable_get(:'@mapping_registry')['First-Second']
+      expect(mapping).not_to be_nil
+      expect(mapping).to respond_to :call
     end
   end
 
   context '#map' do
-    class First
-      attr_accessor :one, :two
-      def initialize one, two
-        @one = one
-        @two = two
-      end
-    end
-
-    class Second
-      attr_accessor :eleven, :twelve
-    end
-
     before do
-      subject.define_mapping First do |mapping|
-        mapping.eleven = :one
-        mapping.twelve = :two
+      subject.define_mapping First, Second do |first, second|
+        second.eleven = first.one
+        second.twelve = first.two
       end
     end
 

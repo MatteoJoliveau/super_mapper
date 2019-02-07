@@ -1,8 +1,8 @@
 # SuperMapper
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/super_mapper`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+**SuperMapper** is a quick and simple mapper between Ruby object.  
+Define a mapping between attribute readers and writers and automatically convert classes.
+    
 
 ## Installation
 
@@ -22,7 +22,48 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Defining mapping
+
+Create a new Mapper instance, then start describing mapping to a specific class
+```ruby
+mapper = SuperMapper.new
+
+mapper.define_mapping User, UserStruct  do |user, user_struct|
+  user_struct.first_name = user.first_name
+  
+  # Apply transformations
+  user_struct.username = user.username.downcase
+  
+  # Generate new values 
+  user_struct.created_at = Time.now
+end
+```
+
+### Apply conversions
+
+```ruby
+user = User.first
+
+# With target classes
+user_struct = mapper.map user, UserStruct
+
+# With existing target objects (target is modified in place)
+mapper.map user, user_struct
+
+# Multiple mappings can be applied to the same target. 
+# Later ones override previously set value if conflicts occur.
+
+some_other_user_representation = context[:current_user]
+ 
+mapper.map user, user_struct
+mapper.map some_other_user_representation, user_struct
+
+# +user_struct+ now has fields from both User and the other representation
+```
+
+
+Target objects or classes MUST implement the correct attribute writers (otherwise a `NoMethodError` is raised).
+If using target classes, they MUST implement a no-args constructor because new instances are created via `target_class.new`.
 
 ## Development
 
