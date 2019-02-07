@@ -13,8 +13,26 @@ class Second
 end
 
 RSpec.describe SuperMapper do
+  let(:first) { First.new 'one', 'two' }
+  let(:second) { Second.new }
+
   it 'has a version number' do
     expect(SuperMapper::VERSION).not_to be nil
+  end
+
+  context '.new' do
+    it 'acccepts a tap block' do
+      mapper = described_class.new do |mapper|
+        expect(mapper).to be_an_instance_of SuperMapper
+
+        mapper.define_mapping First, Second do |first, second|
+          second.eleven = first.one
+        end
+      end
+
+      second = mapper.map first, Second
+      expect(second.eleven).to eq first.one
+    end
   end
 
   context '#define_mapping' do
@@ -37,9 +55,6 @@ RSpec.describe SuperMapper do
         second.twelve = first.two
       end
     end
-
-    let(:first) { First.new 'one', 'two' }
-    let(:second) { Second.new }
 
     it 'can convert between one object and a class' do
       expect(second.eleven).to be_nil

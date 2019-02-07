@@ -3,6 +3,9 @@
 require 'super_mapper/version'
 
 class SuperMapper
+  def initialize
+    yield self if block_given?
+  end
 
   ##
   # Define a new mapping schema from a source class, mapping getters to setters
