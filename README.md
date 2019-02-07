@@ -28,6 +28,7 @@ Create a new Mapper instance, then start describing mapping to a specific class
 ```ruby
 mapper = SuperMapper.new
 
+# Define a mapping from a User to a UserStruct
 mapper.define_mapping User, UserStruct  do |user, user_struct|
   user_struct.first_name = user.first_name
   
@@ -62,7 +63,6 @@ mapper.map some_other_user_representation, user_struct
 ```
 
 
-Target objects or classes MUST implement the correct attribute writers (otherwise a `NoMethodError` is raised).
 If using target classes, they MUST implement a no-args constructor because new instances are created via `target_class.new`.
 
 ## Development
@@ -73,7 +73,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/super_mapper. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/matteojoliveau/super_mapper. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
