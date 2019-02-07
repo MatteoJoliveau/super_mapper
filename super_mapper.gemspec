@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.authors = ['Matteo Joliveau']
   spec.email   = ['matteojoliveau@gmail.com']
 
-  spec.summary     = 'Quick and simple mapping between classes'
+  spec.summary     = 'Quick and simple mapping between Ruby classes'
   spec.description = <<~DESCRIPTION
     SuperMapper is a quick and simple mapper between Ruby object.
     Define a mapping between attribute readers and writers and automatically convert classes
