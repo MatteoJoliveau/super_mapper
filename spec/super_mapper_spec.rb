@@ -71,5 +71,14 @@ RSpec.describe SuperMapper do
       expect(result.eleven).to eq first.one
       expect(result.twelve).to eq first.two
     end
+
+    it 'returns nil if the source is nil' do
+      result = subject.map nil, Second
+      expect(result).to be_nil
+    end
+
+    it 'throws an error if the target is nil' do
+      expect { subject.map first, nil }.to raise_error ArgumentError, 'target cannot be nil'
+    end
   end
 end

@@ -22,6 +22,10 @@ class SuperMapper
   # @param [Object | Class] target the target object or class. If a class is given, it should have a no-args constructor since the new instance will be created calling +target.new+
   # @return [Object] the target object, or a new instance of the target class, filled with values coming from the source
   def map source, target
+    return if source.nil?
+
+    raise ArgumentError, 'target cannot be nil' if target.nil?
+    
     target.is_a?(Class) ? map_object(source, target.new) : map_object(source, target)
   end
 
